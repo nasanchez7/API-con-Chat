@@ -1,0 +1,126 @@
+header{
+    background-color: dimgray;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+header h1{
+    font-weight: bold;
+    font-size: 16px;
+    color: white
+}
+
+.formLista{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.formulario{
+    background-color: dimgray;
+    height: 300px;
+    padding: 0px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formulario form{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.formulario form input{
+    border-radius: 5px;
+    border: none;
+}
+
+.listaProductos{
+    background-color: dimgray;
+    height: 300px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lista{
+    height: auto;
+    overflow-y: scroll;
+    background-color: white;
+}
+
+.mensajesContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.mensajesContainer h1{
+    margin: 0px;
+}
+
+.mensajes{
+    display: flex;
+    flex-direction: column;
+    background-color: dimgray;
+    border-radius: 10px;
+    padding: 10px 20px;
+    align-items: center;
+}
+
+.mensajes form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: space-around;
+}
+
+.mensaje{
+    background-color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+.email{
+    color: blue;
+    font-size: 12px;
+    margin: 0px;
+    font-weight: bold;
+}
+
+.fecha{
+    color: red;
+    font-size: 12px;
+    margin: 0px;
+    margin-left: 5px;
+}
+
+.mensaje h4{
+    color: green;
+    font-style: italic;
+    margin: 0px;
+    margin-left: 5px;
+}
+
+.listaMensajes{
+    height: 200px;
+    overflow-y: scroll;
+    padding: 0px 10px;
+}

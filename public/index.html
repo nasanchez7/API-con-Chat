@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API con chat</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./index.js"></script>
+</head>
+<body>
+    <header>
+        <h1>API con chat - Nadir Sanchez</h1>
+    </header>
+    <main>
+        <section class="formLista">
+            <div class="formulario">
+                <h2>Agregar producto</h2>
+                    <form onsubmit="return enviarMensaje(this)">
+                        <label for="title">Nombre producto</label>
+                        <input type="text" name="title" id="title"> 
+                        <label for="price">Precio producto</label> 
+                        <input type="number" name="price" id="price"> 
+                        <label for="thumbnail"> URL imagen </label> 
+                        <input type="text" name="thumbnail" id="thumbnail"> 
+                        <input type="submit" value="Guardar producto">
+                    </form>
+            </div>
+            <div class="listaProductos">
+                <h1>Lista productos</h1>
+                <div class="lista">
+                    <table id="listaProductos">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Imagen</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <div class="mensajesContainer">
+            <div class="mensajes">
+                <h1>Centro de mensajes</h1>
+                <form onsubmit="return nuevoMensaje(this)">
+                    <label for="email">Email</label>
+                    <input type="email" placeholder="nadir@hotmail.com" name="email" id="email" required>
+                    <div id="mensajes" class="listaMensajes">
+
+                    </div>
+                    <input type="text" placeholder="Escribe tu mensaje" name="mensaje" id="mensaje" required>
+                    <input type="submit" value="Enviar">
+                </form>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
