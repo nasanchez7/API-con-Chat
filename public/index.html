@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API con chat</title>
     <link rel="stylesheet" href="./styles.css">
@@ -17,7 +18,7 @@
         <section class="formLista">
             <div class="formulario">
                 <h2>Agregar producto</h2>
-                    <form onsubmit="return enviarMensaje(this)">
+                    <form onsubmit="return enviarProducto(this)">
                         <label for="title">Nombre producto</label>
                         <input type="text" name="title" id="title"> 
                         <label for="price">Precio producto</label> 
@@ -44,9 +45,20 @@
         <div class="mensajesContainer">
             <div class="mensajes">
                 <h1>Centro de mensajes</h1>
+                <h2 id="porcentaje"></h2>
                 <form onsubmit="return nuevoMensaje(this)">
                     <label for="email">Email</label>
                     <input type="email" placeholder="nadir@hotmail.com" name="email" id="email" required>
+                    <label for="nombre">Nombre</label>
+                    <input type="text" placeholder="Nombre" name="nombre" id="nombre" required>
+                    <label for="apellido">Apellido</label>
+                    <input type="text" placeholder="Apellido" name="apellido" id="apellido" required>
+                    <label for="edad">Edad</label>
+                    <input type="number" placeholder="Edad" name="edad" id="edad" required>
+                    <label for="alias">Alias</label>
+                    <input type="text" placeholder="Alias" name="alias" id="alias" required>
+                    <label for="avatar">Foto de perfil</label>
+                    <input type="text" placeholder="Avatar" name="avatar" id="avatar" required>
                     <div id="mensajes" class="listaMensajes">
 
                     </div>
@@ -59,3 +71,4 @@
     </main>
 </body>
 </html>
+

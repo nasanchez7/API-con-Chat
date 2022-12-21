@@ -105,6 +105,10 @@ header h1{
     font-weight: bold;
 }
 
+.avatar{
+    width: 25px;
+}
+
 .fecha{
     color: red;
     font-size: 12px;

@@ -1,19 +1,38 @@
 const socket = io()
+//Esquemas
+const authorSchema = new normalizr.schema.Entity("author", {}, {idAttribute: "email"})
+const mensajeSchema = new normalizr.schema.Entity("mensaje", {
+    author: authorSchema
+}, {idAttribute: "id"})
+const mensajesSchema = new normalizr.schema.Entity("mensajes", {
+    mensajes: [mensajeSchema]
+}, {idAttribute: "id"})
 
 socket.on('connection', (socket) => { 
     console.log('Usuario conectado')  
 })
 
 socket.on('mensajes', (data) => {
+    const mensajesDesnormalizados = normalizr.denormalize(data.result, mensajesSchema, data.entities)
+
+    const tamañoMensajesNormalizados = JSON.stringify(data).length
+    const tamañoMensajesSinNormalizar = JSON.stringify(mensajesDesnormalizados).length
+
+    const porcentaje = (tamañoMensajesNormalizados / tamañoMensajesSinNormalizar) * 100
+
     const listaMensajes = document.getElementById("mensajes")
-    data.forEach((mensaje)=>{
+    const porcentajeHtml = document.getElementById("porcentaje")
+    porcentajeHtml.innerHTML = `(Compresion: %${porcentaje.toFixed(1)})`
+
+    mensajesDesnormalizados.mensajes.forEach((mensaje)=>{
         const mensajeContainer = document.createElement('div')
         mensajeContainer.className = "mensaje"
         mensajeContainer.innerHTML = `
-        <h3 class="email"> ${mensaje.email} </h3> <h3  class="fecha"> ${mensaje.fecha}: </h3> <h4> ${mensaje.mensaje} </h4>
+        <h3 class="email"> ${mensaje._doc.author.email} </h3> <h3  class="fecha"> ${mensaje._doc.author.fecha}: </h3> <h4> ${mensaje._doc.text} </h4>
+        <img class="avatar" src=${mensaje._doc.author.avatar} alt=${mensaje._doc.author.nombre}>
         `
         listaMensajes.appendChild(mensajeContainer)
-    })
+    }) 
 })
 
 socket.on('mensajeNuevo', (data) => {
@@ -21,9 +40,10 @@ socket.on('mensajeNuevo', (data) => {
     const mensajeContainer = document.createElement('div')
     mensajeContainer.className = "mensaje"
     mensajeContainer.innerHTML = `
-        <h3 class="email"> ${data.email} </h3> <h3  class="fecha"> ${data.fecha}: </h3> <h4> ${data.mensaje} </h4>
+        <h3 class="email"> ${data.author.email} </h3> <h3  class="fecha"> ${data.author.fecha}: </h3> <h4> ${data.text} </h4>
+        <img class="avatar" src=${data.author.avatar} alt=${data.author.nombre}>
         `
-    listaMensajes.appendChild(mensajeContainer)
+    listaMensajes.appendChild(mensajeContainer) 
 })
 
 
@@ -53,30 +73,40 @@ socket.on('productoNuevo', (data) => {
 
 
 
-const enviarMensaje = (e) => {
-    console.log(e)
+const enviarProducto = (e) => {
+    //console.log(e)
     const title = document.getElementById("title").value
     const price = document.getElementById("price").value
     const thumbnail = document.getElementById("thumbnail").value
-    const mensaje = {
+    const producto = {
         title: title,
         price: price,
         thumbnail: thumbnail
     }
-    socket.emit('producto', mensaje)
+    socket.emit('producto', producto)
     return false
 }
 
 const nuevoMensaje = (e) => {
-    console.log(e)
-
     const email = document.getElementById("email").value
     const mensaje = document.getElementById("mensaje").value
+    const nombre = document.getElementById("nombre").value
+    const apellido = document.getElementById("apellido").value
+    const edad = document.getElementById("edad").value
+    const alias = document.getElementById("alias").value
+    const avatar = document.getElementById("avatar").value
 
     const mensajeNuevo = {
-        email: email,
-        mensaje: mensaje,
-        fecha: new Date().toLocaleString()
+        author:{
+            email: email,
+            nombre: nombre,
+            apellido: apellido,
+            edad: edad,
+            alias: alias,
+            avatar: avatar,
+            fecha: new Date().toLocaleString()
+        },
+        text: mensaje,
     }
 
     socket.emit('mensaje', mensajeNuevo)
