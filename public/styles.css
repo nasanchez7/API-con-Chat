@@ -1,5 +1,5 @@
 header{
-    background-color: dimgray;
+    background-color: rgb(97, 95, 175);
     padding: 10px;
     border-radius: 10px;
 }
@@ -19,7 +19,7 @@ header h1{
 }
 
 .formulario{
-    background-color: dimgray;
+    background-color: rgb(97, 95, 175);
     height: 300px;
     padding: 0px 20px;
     border-radius: 10px;
@@ -42,7 +42,7 @@ header h1{
 }
 
 .listaProductos{
-    background-color: dimgray;
+    background-color: rgb(97, 95, 175);
     height: 300px;
     padding: 10px 20px;
     border-radius: 10px;
@@ -72,7 +72,7 @@ header h1{
 .mensajes{
     display: flex;
     flex-direction: column;
-    background-color: dimgray;
+    background-color: rgb(97, 95, 175);
     border-radius: 10px;
     padding: 10px 20px;
     align-items: center;
@@ -128,3 +128,29 @@ header h1{
     overflow-y: scroll;
     padding: 0px 10px;
 }
+
+.formLogin{
+    background-color: rgb(97, 95, 175);
+    padding: 10px 20px;
+    border-radius: 10px;
+    width: fit-content;
+    color: white;
+}
+
+.formLogin p{
+    font-weight: bold;
+}
+
+.logout{
+    background-color: rgb(97, 95, 175);
+    padding: 10px 20px;
+    border-radius: 10px;
+    width: fit-content;
+    color: white;
+}
+
+.logout p {
+    font-weight: bold;
+}
+
+

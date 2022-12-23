@@ -8,16 +8,14 @@ const faker = require('faker')
 const mongoose = require('mongoose')
 const normalizer = require('normalizr')
 const util = require('util')
-
 faker.locale = "es"
-
 const app = express()
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
 
 //MySQL (productos)
 const archivo = new Contenedor(options.mysql, "ecommerce")
-//MongoDb (mensajes)
+//MongoDb schemas (mensajes)
 const schemaMensajes = {
     author: {
         email: {type: String, require: true, max: 100},
@@ -34,9 +32,30 @@ const collectionSchema = new mongoose.Schema(schemaMensajes)
 const collections = mongoose.model("mensajes", collectionSchema)
 const mensajes = new MongoDb(collections);
 
+//MongoDb sesiones
+const cookieParser = require("cookie-parser")
+const session = require("express-session")
+const MongoStore = require("connect-mongo")
+const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('./public'))
+app.use(cookieParser())
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://root:root@cluster0.i61fljc.mongodb.net/sesiones?retryWrites=true&w=majority",
+        mongoOptions: advancedOptions,
+        ttl: 600
+    }),
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false
+}))
+
+//Plantilla ejs
+app.set('views', './views'); 
+app.set('view engine', 'ejs'); 
 
 const initMongoDB = async () => {
     try {
@@ -55,8 +74,40 @@ const print = (obj) => {
     console.log(util.inspect(obj, false, 12, true))
 }
 
-app.get('/', (req, res) => {
-    res.sendFile('index.html', {root: __dirname})
+const auth = (req, res, next) => {
+    if(req.session.usuario){
+        return next()
+    }
+    res.redirect("/login")
+}
+
+app.get('/', auth ,(req, res) => {
+    const nombre = req.session.usuario;
+    res.render('index', {nombre: nombre || "usuario"})
+})
+
+app.get('/login', (req, res) => {
+    if(req.session.usuario){
+        return res.redirect("/")
+    }
+    res.render('login', {})
+})
+
+app.post('/login', (req, res) => {
+    const nombre = req.body.usuario;
+    console.log(nombre)
+    req.session.usuario = nombre
+    res.redirect('/')
+})
+
+app.get('/logout', (req, res) => {
+    const nombre = req.session.usuario;
+    req.session.destroy((err) => {
+        if (!err) {
+        return res.render('logout', {nombre: nombre})
+        }
+        res.status(500).send('Ha ocurrido un error durante el logout');
+    });
 })
 
 app.get('/api/productos-test', (req, res) => {
