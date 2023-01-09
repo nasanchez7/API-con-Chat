@@ -10,8 +10,11 @@
 <body>
     <form action="/login" method="post" class="formLogin">
         <p>Logueate con tu usuario</p>
-        <input type="text" id="usuario" name="usuario" required placeholder="Tu nombre de usuario">
+        <input type="email" id="username" name="username" required placeholder="Tu email">
+        <input type="password" id="password" name="password" required placeholder="Tu contraseña">
         <input type="submit" value="Loguearse">
+        <p>No tienes cuenta? </p>
+        <button onclick="location.href='/register'">Registrate</button>
     </form>
 </body>
 </html>

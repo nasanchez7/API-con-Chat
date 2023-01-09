@@ -13,9 +13,16 @@ const app = express()
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
 
+//Bcryptjs
+const bcrypt = require('bcryptjs')
+
+//Passport
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+
 //MySQL (productos)
 const archivo = new Contenedor(options.mysql, "ecommerce")
-//MongoDb schemas (mensajes)
+//MongoDb schemas
 const schemaMensajes = {
     author: {
         email: {type: String, require: true, max: 100},
@@ -28,9 +35,18 @@ const schemaMensajes = {
     },
     text: {type: String, require: true, max: 100},
 }
+const userSchema = {
+    email: {type: String, require: true, max: 100},
+    password: {type: String, require: true, max: 100}
+}
+
 const collectionSchema = new mongoose.Schema(schemaMensajes)
 const collections = mongoose.model("mensajes", collectionSchema)
 const mensajes = new MongoDb(collections);
+
+const collectionUserSchema = new mongoose.Schema(userSchema)
+const collectionUser = mongoose.model("usuarios", collectionUserSchema)
+const usuarios = new MongoDb(collectionUser)
 
 //MongoDb sesiones
 const cookieParser = require("cookie-parser")
@@ -42,7 +58,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('./public'))
 app.use(cookieParser())
-app.use(session({
+/* app.use(session({
     store: MongoStore.create({
         mongoUrl: "mongodb+srv://root:root@cluster0.i61fljc.mongodb.net/sesiones?retryWrites=true&w=majority",
         mongoOptions: advancedOptions,
@@ -51,7 +67,20 @@ app.use(session({
     secret: "secret",
     resave: false,
     saveUninitialized: false
+})) */
+app.use(session({
+    secret: "secret",
+    cookie: {
+        httpOnly: false,
+        secure: false,
+        maxAge: 6000
+    },
+    rolling: true,
+    resave: true,
+    saveUninitialized: false
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 
 //Plantilla ejs
 app.set('views', './views'); 
@@ -70,38 +99,88 @@ const initMongoDB = async () => {
     }
 }
 
-const print = (obj) => {
-    console.log(util.inspect(obj, false, 12, true))
+//Validar contraseña
+const isValidPassword = (user, password) => {
+    return bcrypt.compareSync(password, user)
 }
 
 const auth = (req, res, next) => {
-    if(req.session.usuario){
+    if(req.isAuthenticated()){
         return next()
     }
     res.redirect("/login")
 }
 
-app.get('/', auth ,(req, res) => {
-    const nombre = req.session.usuario;
-    res.render('index', {nombre: nombre || "usuario"})
+passport.use('login', new LocalStrategy(async (username, password, done) => {
+        const usuario = await usuarios.getByMail(username)
+        if(!usuario){
+            return done(null, false)
+        }
+        if(isValidPassword(usuario.password, password)){
+            return done(null, username)
+        }else{
+            return done(null, false)
+        }
+    }
+))
+
+passport.use('register', new LocalStrategy(async (username, password, done) => {
+    const usuario = await usuarios.getByMail(username)
+        if(usuario){
+            return done(null, false)
+        }else{
+            const passwordEncrypted = await bcrypt.hash(password, 10)
+            const newUser = {
+                email: username,
+                password: passwordEncrypted
+            }
+            await usuarios.save(newUser)
+            return done(null, newUser.email)
+        }
+}))
+
+passport.serializeUser((user, done) => {
+    done(null, user)
+})
+
+passport.deserializeUser((username, done) => {
+    usuarios.getByMail(username).then(usuario => {
+        done(null, usuario)
+    })
+})
+
+app.get('/', auth, (req, res) => {
+    res.render('index', {email: req.user.email})
 })
 
 app.get('/login', (req, res) => {
-    if(req.session.usuario){
+    if(req.isAuthenticated()){
         return res.redirect("/")
     }
     res.render('login', {})
 })
 
-app.post('/login', (req, res) => {
-    const nombre = req.body.usuario;
-    console.log(nombre)
-    req.session.usuario = nombre
-    res.redirect('/')
+app.get('/register', (req, res) => {
+    if(req.isAuthenticated()){
+        return res.redirect("/")
+    }
+    res.render('register', {})
+})
+
+app.post('/login', passport.authenticate('login', {failureRedirect: '/failLogin', successRedirect: '/'}))
+
+app.post('/register', passport.authenticate('register', {failureRedirect: '/failRegister', successRedirect: '/login'}))
+
+app.get('/failLogin', (req, res) => {
+    return res.render('failLogin', {})
+})
+
+app.get('/failRegister', (req, res) => {
+    return res.render('failRegister', {})
 })
 
 app.get('/logout', (req, res) => {
-    const nombre = req.session.usuario;
+    const nombre = req.session.user;
     req.session.destroy((err) => {
         if (!err) {
         return res.render('logout', {nombre: nombre})

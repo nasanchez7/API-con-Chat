@@ -11,7 +11,14 @@ class MongoDb {
 
     async getById(id){
         const elemento = await this.collections.find().where({_id: id});
-        console.log(elemento)
+        //console.log(elemento)
+        return elemento
+    }
+
+    async getByMail(userEmail){
+        const elemento = await this.collections.find().where({email: userEmail});
+        console.log(elemento[0])
+        return elemento[0]
     }
 
     async getAll(){
