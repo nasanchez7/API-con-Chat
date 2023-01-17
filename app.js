@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Contenedor = require("./contenedores/contenedorSql.js")
 const MongoDb = require('./contenedores/contenedorMongoDB.js')
 const options = require("./connection/options.js")
@@ -48,6 +49,13 @@ const collectionUserSchema = new mongoose.Schema(userSchema)
 const collectionUser = mongoose.model("usuarios", collectionUserSchema)
 const usuarios = new MongoDb(collectionUser)
 
+//Argumentos
+const parseArgs = require('minimist')
+const argv = parseArgs(process.argv.slice(2))
+
+//Puerto
+const PORT =  Number(argv.port) || 8080
+
 //MongoDb sesiones
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
@@ -88,7 +96,7 @@ app.set('view engine', 'ejs');
 
 const initMongoDB = async () => {
     try {
-        const url = "mongodb://localhost:27017/ecommerce"
+        const url = process.env.MONGODB_URL
         await mongoose.connect(url, {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -201,9 +209,9 @@ app.get('/api/productos-test', (req, res) => {
     res.json(productosAleatorios)
 })
 
-httpServer.listen(3000, async () => {
+httpServer.listen(PORT, async () => {
     await initMongoDB()
-    console.log('SERVER ON')
+    console.log('Server escuchando en puerto ' + PORT)
 }) 
 
 io.on('connection', async (socket) => { 

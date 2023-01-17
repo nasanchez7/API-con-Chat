@@ -1,18 +1,20 @@
+require('dotenv').config()
+
 const options = {
     mysql:{
         client: "mysql",
         connection: {
-            host: "127.0.0.1",
-            user: "root",
+            host: process.env.MYSQL_HOST,
+            user: process.env.MYSQL_USER,
             password: "",
-            database: "ecommerce"
+            database: process.env.MYSQL_DATABASE
         },
         pool: {min: 0, max: 7}
     },
     sqlite3:{
         client: "sqlite3",
         connection: {
-            filename: "./db/ecommerce.sqlite"
+            filename: process.env.SQLITE3_FILENAME
         },
         useNullAsDefault: true
     }
