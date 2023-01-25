@@ -1,0 +1,20 @@
+FOVERER fork
+forever start app-no-bloqueante --port 8081 --mode fork
+
+FOREVER cluster
+forever start app-no-bloqueante --port 8081 --mode cluster
+
+MODO FORK pm2
+pm2 start app-no-bloqueante.js --name=server_individual -- --port 8080
+pm2 start app-no-bloqueante.js --name=server_uno -- --port 8081
+pm2 start app-no-bloqueante.js --name=server_dos -- --port 8082
+pm2 start app-no-bloqueante.js --name=server_tres -- --port 8083
+pm2 start app-no-bloqueante.js --name=server_cuatro -- --port 8084
+pm2 start app-no-bloqueante.js --name=server_cinco -- --port 8085
+
+MODO CLUSTER pm2
+pm2 start app-no-bloqueante.js --name=server_uno --watch -i max -- --port 8081
+pm2 start app-no-bloqueante.js --name=server_dos --watch -i max -- --port 8082
+pm2 start app-no-bloqueante.js --name=server_tres --watch -i max -- --port 8083
+pm2 start app-no-bloqueante.js --name=server_cuatro --watch -i max -- --port 8084
+pm2 start app-no-bloqueante.js --name=server_cinco --watch -i max -- --port 8085
