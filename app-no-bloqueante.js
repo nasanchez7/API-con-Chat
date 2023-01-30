@@ -12,6 +12,18 @@ app.set('view engine', 'ejs');
 const parseArgs = require('minimist')
 const argv = parseArgs(process.argv.slice(2))
 
+//Logger winston
+const winston = require('winston')
+
+const logger = winston.createLogger({
+    level: 'info',
+    transports: [
+        new winston.transports.Console({level: 'verbose'}),
+        new winston.transports.File({filename: 'error.log', level: 'error'}),
+        new winston.transports.File({filename: 'warn.log', level: 'warn'})
+    ]
+})
+
 //Puerto
 const PORT =  Number(argv.port) || 8080
 
@@ -23,12 +35,22 @@ const numCPUs = require('os').cpus().length
 
 if(mode === 'fork' || mode === undefined){
     app.get("/", (req, res) => {
+        const infoRuta = {
+            ruta: req.route.path,
+            metodo: req.route.stack[0].method
+        }
+        logger.log('info', infoRuta)
         res.send({
             Ruta: "/",
             puerto: PORT
         })
     })
     app.get("/info", (req, res) => {
+        const infoRuta = {
+            ruta: req.route.path,
+            metodo: req.route.stack[0].method
+        }
+        logger.log('info', infoRuta)
         res.render("info", {info: [
             {clave: "Argumentos de entrada", valor: process.argv.slice(2)},
             {clave: "Sistema operativo", valor: process.platform},
@@ -41,7 +63,11 @@ if(mode === 'fork' || mode === undefined){
         ]})
     })
     app.get("/api/randoms", (req, res) => {
-        console.log(PORT)
+        const infoRuta = {
+            ruta: req.route.path,
+            metodo: req.route.stack[0].method
+        }
+        logger.log('info', infoRuta)
         const cantidadNum = req.query.cant ? req.query.cant : 100000000
         const computo = fork('./scripts/CalcularRandom.js')
         computo.send(cantidadNum)
@@ -65,12 +91,22 @@ if(mode === 'cluster'){
         })
     }else{
         app.get("/", (req, res) => {
+            const infoRuta = {
+                ruta: req.route.path,
+                metodo: req.route.stack[0].method
+            }
+            logger.log('info', infoRuta)
             res.send({
                 Ruta: "/",
                 puerto: PORT
             })
         })
         app.get("/info", (req, res) => {
+            const infoRuta = {
+                ruta: req.route.path,
+                metodo: req.route.stack[0].method
+            }
+            logger.log('info', infoRuta)
             res.render("info", {info: [
                 {clave: "Argumentos de entrada", valor: process.argv.slice(2)},
                 {clave: "Sistema operativo", valor: process.platform},
@@ -83,6 +119,11 @@ if(mode === 'cluster'){
             ]})
         })
         app.get("/api/randoms", (req, res) => {
+            const infoRuta = {
+                ruta: req.route.path,
+                metodo: req.route.stack[0].method
+            }
+            logger.log('info', infoRuta)
             const cantidadNum = req.query.cant ? req.query.cant : 100000000
             const computo = fork('./scripts/CalcularRandom.js')
             computo.send(cantidadNum)

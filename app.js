@@ -13,9 +13,22 @@ faker.locale = "es"
 const app = express()
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
+const compression = require('compression')
 
 //Bcryptjs
 const bcrypt = require('bcryptjs')
+
+//Logger winston
+const winston = require('winston')
+
+const logger = winston.createLogger({
+    level: 'info',
+    transports: [
+        new winston.transports.Console({level: 'verbose'}),
+        new winston.transports.File({filename: 'error.log', level: 'error'}),
+        new winston.transports.File({filename: 'warn.log', level: 'warn'})
+    ]
+})
 
 //Passport
 const passport = require('passport')
@@ -66,6 +79,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('./public'))
 app.use(cookieParser())
+app.use(compression())
 /* app.use(session({
     store: MongoStore.create({
         mongoUrl: "mongodb+srv://root:root@cluster0.i61fljc.mongodb.net/sesiones?retryWrites=true&w=majority",
@@ -158,6 +172,11 @@ passport.deserializeUser((username, done) => {
 })
 
 app.get('/', auth, (req, res) => {
+    const infoRuta = {
+        ruta: req.route.path,
+        metodo: req.route.stack[0].method
+    }
+    logger.log('info', infoRuta)
     res.render('index', {email: req.user.email})
 })
 
@@ -165,6 +184,11 @@ app.get('/login', (req, res) => {
     if(req.isAuthenticated()){
         return res.redirect("/")
     }
+    const infoRuta = {
+        ruta: req.route.path,
+        metodo: req.route.stack[0].method
+    }
+    logger.log('info', infoRuta)
     res.render('login', {})
 })
 
@@ -172,6 +196,11 @@ app.get('/register', (req, res) => {
     if(req.isAuthenticated()){
         return res.redirect("/")
     }
+    const infoRuta = {
+        ruta: req.route.path,
+        metodo: req.route.stack[0].method
+    }
+    logger.log('info', infoRuta)
     res.render('register', {})
 })
 
@@ -180,19 +209,27 @@ app.post('/login', passport.authenticate('login', {failureRedirect: '/failLogin'
 app.post('/register', passport.authenticate('register', {failureRedirect: '/failRegister', successRedirect: '/login'}))
 
 app.get('/failLogin', (req, res) => {
+    logger.log('warn', 'Logueo fallido')
     return res.render('failLogin', {})
 })
 
 app.get('/failRegister', (req, res) => {
+    logger.log('warn', 'Registro fallido')
     return res.render('failRegister', {})
 })
 
 app.get('/logout', (req, res) => {
     const nombre = req.session.user;
+    const infoRuta = {
+        ruta: req.route.path,
+        metodo: req.route.stack[0].method
+    }
+    logger.log('info', infoRuta)
     req.session.destroy((err) => {
         if (!err) {
         return res.render('logout', {nombre: nombre})
         }
+        logger.log('warn', 'Ha ocurrido un error durante el logout')
         res.status(500).send('Ha ocurrido un error durante el logout');
     });
 })
@@ -206,6 +243,11 @@ app.get('/api/productos-test', (req, res) => {
             thumbnail: faker.image.fashion()
         })
     }
+    const infoRuta = {
+        ruta: req.route.path,
+        metodo: req.route.stack[0].method
+    }
+    logger.log('info', infoRuta)
     res.json(productosAleatorios)
 })
 
@@ -216,10 +258,17 @@ httpServer.listen(PORT, async () => {
 
 io.on('connection', async (socket) => { 
     console.log('Usuario conectado')
-    socket.emit("productos", await archivo.getAll())   
-
+    try {
+        socket.emit("productos", await archivo.getAll()) 
+    } catch (error) {
+        logger.log('error', error)
+    }
     socket.on('producto', async (data) => {
-        await archivo.save(data)
+        try {
+            await archivo.save(data)
+        } catch (error) {
+            logger.log('error', error)
+        }
         io.sockets.emit('productoNuevo', data);
     }); 
 
@@ -241,7 +290,11 @@ io.on('connection', async (socket) => {
     socket.emit('mensajes', mensajesNormalizados)
 
     socket.on('mensaje', async (data) => {
-        await mensajes.save(data)
+        try {
+            await mensajes.save(data)
+        } catch (error) {
+            logger.log('error', error)
+        }
         io.sockets.emit('mensajeNuevo', data);
     });
 })
