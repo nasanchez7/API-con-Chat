@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "serve -s build",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "build": "node app.js"
   },
   "dependencies": {
     "autocannon": "^7.10.0",
