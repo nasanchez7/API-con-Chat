@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "test": "node benchmark.js",
     "start": "node app.js"
   },
   "dependencies": {
