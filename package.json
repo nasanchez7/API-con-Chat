@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node app-no-bloqueante.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "autocannon": "^7.10.0",

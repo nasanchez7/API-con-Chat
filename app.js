@@ -67,7 +67,7 @@ const parseArgs = require('minimist')
 const argv = parseArgs(process.argv.slice(2))
 
 //Puerto
-const PORT =  Number(argv.port) || 8080
+const PORT =  Number(process.env.PORT) || 46154
 
 //MongoDb sesiones
 const cookieParser = require("cookie-parser")
