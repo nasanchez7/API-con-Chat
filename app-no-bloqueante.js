@@ -25,7 +25,7 @@ const logger = winston.createLogger({
 })
 
 //Puerto
-const PORT =  Number(argv.port) || 8080
+const PORT =  process.env.PORT || 8000
 
 //Modo de ejecucion
 const mode = argv.mode
