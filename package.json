@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "node benchmark.js",
-    "start": "0x app-no-bloqueante.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "autocannon": "^7.10.0",
