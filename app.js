@@ -110,7 +110,7 @@ app.set('view engine', 'ejs');
 
 const initMongoDB = async () => {
     try {
-        const url = process.env.MONGODB_URL
+        const url = process.env.MONGODB_URL || "mongodb://localhost:27017/ecommerce"
         await mongoose.connect(url, {
             useNewUrlParser: true,
             useUnifiedTopology: true
