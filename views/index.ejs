@@ -12,20 +12,23 @@
 </head>
 <body>
     <header>
-        <h2>Bienvenido <%=user.nombre%></h2>
-        <h2>Email: <%=user.email%></h2>
-        <h2>Telefono: <%=user.telefono%></h2>
-        <h2>Direccion: <%=user.direccion%></h2>
-        <img src="/<%=user.email%>.jpg" alt="Foto de perfil">
-        <br>
-        <form action="/uploadAvatar" enctype="multipart/form-data" method="post">
-            <input required type="file" name="avatar">
-            <input type="submit" value="Subir imagen">
-        </form>
-        <br>
-        <button onclick="location.href='/register'">Registrate</button>
-        <button onclick="location.href='/login'">Logueate</button>
-        <button onclick="location.href='/logout'">Desloguearse</button>
+        <div>
+            <h2>Bienvenido <%=user.nombre%></h2>
+            <h2>Email: <%=user.email%></h2>
+            <h2>Telefono: <%=user.telefono%></h2>
+            <h2>Direccion: <%=user.direccion%></h2>
+            <small>Sube tu foto de perfil</small>
+            <form action="/uploadAvatar" enctype="multipart/form-data" method="post">
+                <input required type="file" name="avatar">
+                <input type="submit" value="Subir imagen">
+            </form>
+        </div>
+        <div class="avatarContainer">
+            <img src="/<%=user.email%>.jpg" alt="Foto de perfil">
+            <button onclick="location.href='/register'">Registrate</button>
+            <button onclick="location.href='/login'">Logueate</button>
+            <button onclick="location.href='/logout'">Desloguearse</button>
+        </div>
     </header>
     <main>
         <section class="formLista">
@@ -62,9 +65,9 @@
         </section>
 
         <div class="mensajesContainer">
+            <h1>Centro de mensajes</h1>
+            <h2 id="porcentaje"></h2>
             <div class="mensajes">
-                <h1>Centro de mensajes</h1>
-                <h2 id="porcentaje"></h2>
                 <form onsubmit="return nuevoMensaje(this)">
                     <label for="email">Email</label>
                     <input type="email" placeholder="nadir@hotmail.com" name="email" id="email" required>
@@ -78,12 +81,12 @@
                     <input type="text" placeholder="Alias" name="alias" id="alias" required>
                     <label for="avatar">Foto de perfil</label>
                     <input type="text" placeholder="Avatar" name="avatar" id="avatar" required>
-                    <div id="mensajes" class="listaMensajes">
-
-                    </div>
                     <input type="text" placeholder="Escribe tu mensaje" name="mensaje" id="mensaje" required>
                     <input type="submit" value="Enviar">
                 </form>
+                <div id="mensajes" class="listaMensajes">
+
+                </div>
             </div>
         </div>
 

@@ -20,8 +20,7 @@ header h1{
 
 .formulario{
     background-color: rgb(97, 95, 175);
-    height: 300px;
-    padding: 0px 20px;
+    padding: 10px 20px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -36,18 +35,13 @@ header h1{
     justify-content: space-around;
 }
 
-.formulario form input{
-    border-radius: 5px;
-    border: none;
-}
-
 .listaProductos{
     background-color: rgb(97, 95, 175);
-    height: 300px;
     padding: 10px 20px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -58,11 +52,10 @@ header h1{
 }
 
 .mensajesContainer{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: rgb(97, 95, 175);
+    border-radius: 10px;
     margin-top: 10px;
+    padding: 10px;
 }
 
 .mensajesContainer h1{
@@ -71,15 +64,13 @@ header h1{
 
 .mensajes{
     display: flex;
-    flex-direction: column;
     background-color: rgb(97, 95, 175);
     border-radius: 10px;
     padding: 10px 20px;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .mensajes form{
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -124,7 +115,8 @@ header h1{
 }
 
 .listaMensajes{
-    height: 200px;
+    height: 100%;
+    width: 100%;
     overflow-y: scroll;
     padding: 0px 10px;
 }
@@ -153,4 +145,67 @@ header h1{
     font-weight: bold;
 }
 
+header img{
+    width: 80px;
+    border-radius: 50%;
+    border: 1px solid white;
+}
 
+header h2{
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header .avatarContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+header small{
+    color: white;
+    font-weight: bold;
+}
+
+button{
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+h2, h1{
+    color: white;
+    font-weight: bold;
+}
+
+input{
+    padding: 10px!important;
+    background-color: transparent!important;
+    border: 1px solid white!important;
+    border-radius: 15px!important;
+    color: white!important;
+    font-weight: bold!important;
+    margin-top: 10px!important;
+}
+
+input[type="submit"]{
+    cursor: pointer;
+}
+
+label{
+    color: white;
+    font-weight: bold;
+
+}
