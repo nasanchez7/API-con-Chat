@@ -10,8 +10,18 @@
 <body>
     <form action="/register" method="post" class="formLogin">
         <p>Registrate</p>
+        <input type="text" name="nombre" id="nombre" required placeholder="Tu nombre">
+        <br>
+        <input type="text" name="direccion" id="direccion" required placeholder="Tu direccion">
+        <br>
+        <input type="number" name="edad" id="edad" required placeholder="Tu edad">
+        <br>
+        <input type="text" name="telefono" id="telefono" required placeholder="Tu telefono">
+        <br>
         <input type="email" name="username" id="username" required placeholder="Tu email">
-        <input type="password" name="password" id="password" required placeholder="Contraseña">
+        <br>
+        <input type="password" name="password" id="password" required placeholder="Contraseña">.
+        <br>
         <input type="submit" value="Registrarse">
         <p>Ya tienes cuenta? </p>
         <button onclick="location.href='/login'">Logueate</button>

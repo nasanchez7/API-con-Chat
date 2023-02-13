@@ -1,2 +1,16 @@
 {"level":"error","message":"Login required"}
 {"level":"warn","message":"Register required"}
+{"address":"127.0.0.1","code":"ECONNREFUSED","errno":-4078,"fatal":true,"level":"error","port":3306,"syscall":"connect"}
+{"level":"warn","message":"Registro fallido"}
+{"level":"warn","message":"Registro fallido"}
+{"level":"warn","message":"Registro fallido"}
+{"level":"warn","message":"Registro fallido"}
+{"level":"warn","message":"Registro fallido"}
+{"level":"warn","message":"Registro fallido"}
+{"level":"warn","message":"Registro fallido"}
+{"level":"warn","message":"Logueo fallido"}
+{"code":21211,"level":"warn","moreInfo":"https://www.twilio.com/docs/errors/21211","status":400}
+{"code":21211,"level":"warn","moreInfo":"https://www.twilio.com/docs/errors/21211","status":400}
+{"code":21211,"level":"warn","moreInfo":"https://www.twilio.com/docs/errors/21211","status":400}
+{"code":21211,"level":"warn","moreInfo":"https://www.twilio.com/docs/errors/21211","status":400}
+{"level":"warn","message":"Logueo fallido"}

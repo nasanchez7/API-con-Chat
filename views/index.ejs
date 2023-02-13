@@ -12,7 +12,17 @@
 </head>
 <body>
     <header>
-        <h1>Bienvenido <%=email%></h1>
+        <h2>Bienvenido <%=user.nombre%></h2>
+        <h2>Email: <%=user.email%></h2>
+        <h2>Telefono: <%=user.telefono%></h2>
+        <h2>Direccion: <%=user.direccion%></h2>
+        <img src="/<%=user.email%>.jpg" alt="Foto de perfil">
+        <br>
+        <form action="/uploadAvatar" enctype="multipart/form-data" method="post">
+            <input required type="file" name="avatar">
+            <input type="submit" value="Subir imagen">
+        </form>
+        <br>
         <button onclick="location.href='/register'">Registrate</button>
         <button onclick="location.href='/login'">Logueate</button>
         <button onclick="location.href='/logout'">Desloguearse</button>
@@ -20,7 +30,7 @@
     <main>
         <section class="formLista">
             <div class="formulario">
-                <h2>Agregar producto</h2>
+                <h2>Agregar producto al carrito</h2>
                     <form onsubmit="return enviarProducto(this)">
                         <label for="title">Nombre producto</label>
                         <input type="text" name="title" id="title"> 
@@ -32,7 +42,7 @@
                     </form>
             </div>
             <div class="listaProductos">
-                <h1>Lista productos</h1>
+                <h1>Lista productos carrito</h1>
                 <div class="lista">
                     <table id="listaProductos">
                         <tr>
@@ -42,6 +52,12 @@
                         </tr>
                     </table>
                 </div>
+                <form action="/pay" method="post" onsubmit="() => console.log(`Nueva compra`)">
+                    <input type="submit" value="Pagar">
+                </form>
+                <form action="/vaciarCarrito" method="post" onsubmit="() => console.log(`Carrito vacio`)">
+                    <input type="submit" value="Vaciar carrito">
+                </form>
             </div>
         </section>
 
