@@ -15,7 +15,6 @@ class MongoDb {
 
     async getByMail(userEmail){
         const elemento = await this.collections.find().where({email: userEmail});
-        console.log(elemento[0])
         return elemento[0]
     }
 
