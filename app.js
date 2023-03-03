@@ -1,5 +1,5 @@
 require('dotenv').config()
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const Contenedor = require("./Contenedores/contenedorSql.js")
 const options = require("./connection/options.js")
 const express = require('express')
@@ -24,6 +24,20 @@ const mode = argv.mode
 const numCPUs = require('os').cpus().length 
 //Puerto
 const PORT =  process.env.PORT || 8000
+
+const initMongoDb = async () => {
+        const connectAtlas = "mongodb+srv://root:root@cluster0.i61fljc.mongodb.net/ecommerce?retryWrites=true&w=majority"
+        const connectLocal = "mongodb://localhost:27017/ecommerce"
+        try {
+            await mongoose.connect(connectAtlas, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            })
+            console.log("servidor iniciado mongodb")
+        } catch (error) {
+            console.log(error)
+        }
+}
 //MongoDb sesiones
 /* const MongoStore = require("connect-mongo")
 const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
@@ -46,21 +60,6 @@ app.use(cookieParser())
 app.use(compression())
 app.use('/', rutaPrincipal)
 
-//Mongo db
-const initMongoDB = async () => {
-    const connectAtlas = "mongodb+srv://root:root@cluster0.i61fljc.mongodb.net/ecommerce?retryWrites=true&w=majority"
-    const connectLocal = "mongodb://localhost:27017/ecommerce"
-    try {
-        await mongoose.connect(connectAtlas, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        })
-        console.log("servidor iniciado mongodb")
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 if(mode === 'cluster'){
     if(cluster.isPrimary){
         console.log("Worker master escuchando con " + numCPUs + " procesadores")
@@ -72,13 +71,13 @@ if(mode === 'cluster'){
         })
     }else{
         httpServer.listen(PORT, async () => {
-            await initMongoDB()
+            await initMongoDb()
             console.log('Server escuchando en modo cluster en puerto ' + PORT)
         }) 
     }
 }else{
     httpServer.listen(PORT, async () => {
-        await initMongoDB()
+        await initMongoDb()
         console.log('Server escuchando en modo fork en puerto ' + PORT)
     }) 
 }

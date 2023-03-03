@@ -1,5 +1,8 @@
-class MongoDb {
+const DAOpersistencia = require('../DAO/DAOpersistencia');
+
+class MongoDbDao extends DAOpersistencia{
     constructor(collection){
+        super()
         this.collections = collection
     }
 
@@ -33,4 +36,4 @@ class MongoDb {
 
 }
 
-module.exports = MongoDb
+module.exports = MongoDbDao

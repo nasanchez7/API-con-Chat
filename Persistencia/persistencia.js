@@ -1,5 +1,5 @@
-const MongoDb = require('../Contenedores/contenedorMongoDb.js')
 const mongoose = require('mongoose')
+const PersistenciaAPI = require('../api/PersistenciaApi')
 
 //MongoDb schemas
 const schemaMensajes = {
@@ -30,15 +30,15 @@ const productosSchema = {
 
 const collectionSchema = new mongoose.Schema(schemaMensajes)
 const collections = mongoose.model("mensajes", collectionSchema)
-const mensajes = new MongoDb(collections);
+const mensajes = new PersistenciaAPI(collections);
 
 const collectionUserSchema = new mongoose.Schema(userSchema)
 const collectionUser = mongoose.model("usuarios", collectionUserSchema)
-const usuarios = new MongoDb(collectionUser)
+const usuarios = new PersistenciaAPI(collectionUser)
 
 const collectionProductosSchema = new mongoose.Schema(productosSchema)
 const collectionProductos = mongoose.model("productos", collectionProductosSchema)
-const productos = new MongoDb(collectionProductos)
+const productos = new PersistenciaAPI(collectionProductos)
 
 const obtenerMensajes = async () => await mensajes.getAll()
 const obtenerProductos = async () => await productos.getAll()
