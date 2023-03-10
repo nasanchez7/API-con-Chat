@@ -23,7 +23,7 @@ const mode = argv.mode
 //Numeros de CPU
 const numCPUs = require('os').cpus().length 
 //Puerto
-const PORT =  process.env.PORT || 8000
+const PORT = 8000
 
 const initMongoDb = async () => {
         const connectAtlas = "mongodb+srv://root:root@cluster0.i61fljc.mongodb.net/ecommerce?retryWrites=true&w=majority"

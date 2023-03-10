@@ -111,6 +111,14 @@ const postVaciarCarrito = async (req, res) => {
     await servicio.eliminarProductos()
     res.redirect("/")
 }
+const getProductos = async (req, res) => {
+    const productos = await servicio.obtenerProductos()
+    res.json(productos)
+}
+const saveProducto = async (req, res) => {
+    await servicio.guardarProductos(req.body)
+    res.send('Producto guardado')
+}
 const postSubirAvatar = async (req, res) => {
     logger.log('info', "avatar subido")
     console.log(req.session.passport.user)
@@ -164,5 +172,5 @@ const auth = (req, res, next) => {
 
 
 module.exports = {getIndex, getLogin, getRegister, postPay, postVaciarCarrito,
-    postSubirAvatar, getFailLogin, getFailRegister, getLogout, getProductosTest, auth
+    postSubirAvatar, getFailLogin, getFailRegister, getLogout, getProductosTest, auth, getProductos, saveProducto
 }
