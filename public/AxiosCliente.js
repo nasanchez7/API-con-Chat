@@ -1,5 +1,3 @@
-const axios = require('axios')
-
 const guardarProducto = async () => {
     const producto = {
         title: "Producto de prueba",
@@ -18,8 +16,5 @@ const obtenerProductos = async () => {
 const eliminarProductos = async () => {
     await axios.delete('/vaciarCarrito')
     console.log('Productos eliminados')
-}
+} 
 
-guardarProducto()
-obtenerProductos()
-eliminarProductos()

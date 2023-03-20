@@ -6,6 +6,7 @@ const express = require('express')
 const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
 const normalizer = require('normalizr')
+const graphQlExpress = require('express-graphql')
 const app = express()
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
@@ -17,7 +18,8 @@ const servicio = require('./Servicio/servicio.js')
 //MySQL (productos)
 const archivo = new Contenedor(options.mysql, "ecommerce")
 //Argumentos
-const parseArgs = require('minimist')
+const parseArgs = require('minimist');
+const { schemaProducto, obtenerProductos, eliminarProductos } = require('./controllers/controllersGraphQl.js');
 const argv = parseArgs(process.argv.slice(2))
 const mode = argv.mode
 //Numeros de CPU
@@ -59,6 +61,15 @@ app.use(express.static('./public'))
 app.use(cookieParser())
 app.use(compression())
 app.use('/', rutaPrincipal)
+app.use('/graphql', graphQlExpress.graphqlHTTP({
+    schema: schemaProducto,
+    rootValue: {
+        eliminarProductos,
+        obtenerProductos
+    },
+    graphiql: true
+})) 
+
 
 if(mode === 'cluster'){
     if(cluster.isPrimary){

@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API con chat</title>
     <link rel="stylesheet" href="./styles.css">
     <script src="./socket.io/socket.io.js"></script>
     <script src="./index.js"></script>
-    <script src="../public/AxiosCliente.js"></script>
+    <script src="./AxiosCliente.js"></script>
 </head>
 <body>
     <header>
@@ -59,7 +60,7 @@
                 <form action="/pay" method="post" onsubmit="() => console.log(`Nueva compra`)">
                     <input type="submit" value="Pagar">
                 </form>
-                <form action="/vaciarCarrito" method="post" onsubmit="() => console.log(`Carrito vacio`)">
+                <form onsubmit="return vaciarCarrito(this)">
                     <input type="submit" value="Vaciar carrito">
                 </form>
             </div>

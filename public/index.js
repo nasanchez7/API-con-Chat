@@ -72,9 +72,8 @@ socket.on('productoNuevo', (data) => {
 })
 
 
-
 const enviarProducto = (e) => {
-    //console.log(e)
+    console.log('Producto enviado')
     const title = document.getElementById("title").value
     const price = document.getElementById("price").value
     const thumbnail = document.getElementById("thumbnail").value
@@ -86,6 +85,36 @@ const enviarProducto = (e) => {
     socket.emit('producto', producto)
     return false
 }
+
+const obtenerProductosQuery = `
+    query{
+        obtenerProductos{
+        _id,
+        title,
+        price,
+        thumbnail
+        }
+    }
+`
+const eliminarProductosQuery = `
+    mutation{
+        eliminarProductos(type: "all"){
+        _id
+        }
+    }
+`
+const vaciarCarrito = async () => {
+    await axios.post('http://localhost:8000/graphql', {
+        headers: {
+            contentType: 'application/json'
+        },
+        query: eliminarProductosQuery
+    })
+    return false
+} 
+
+
+
 
 const nuevoMensaje = (e) => {
     const email = document.getElementById("email").value
