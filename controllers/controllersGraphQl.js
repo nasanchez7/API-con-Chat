@@ -1,14 +1,7 @@
 const servicio = require('../Servicio/servicio.js')
 const winston = require('winston')
 const graphQl = require('graphql')
-const logger = winston.createLogger({
-    level: 'info',
-    transports: [
-        new winston.transports.Console({level: 'verbose'}),
-        new winston.transports.File({filename: 'error.log', level: 'error'}),
-        new winston.transports.File({filename: 'warn.log', level: 'warn'})
-    ]
-})
+
 
 const schemaProducto = graphQl.buildSchema(`
     type Producto{
