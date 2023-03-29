@@ -15,21 +15,22 @@ const rutaPrincipal = require('./Routers/RutaPrincipal.js')
 const cookieParser = require("cookie-parser")
 const compression = require('compression')
 const servicio = require('./Servicio/servicio.js')
-//MySQL (productos)
-const archivo = new Contenedor(options.mysql, "ecommerce")
+
 //Argumentos
 const parseArgs = require('minimist');
-const { schemaProducto, obtenerProductos, eliminarProductos } = require('./controllers/controllersGraphQl.js');
 const argv = parseArgs(process.argv.slice(2))
+const { schemaProducto, obtenerProductos, eliminarProductos } = require('./controllers/controllersGraphQl.js');
+
+//Modo de ejecucion (fork o cluster)
 const mode = argv.mode
 //Numeros de CPU
 const numCPUs = require('os').cpus().length 
 //Puerto
-const PORT = 8000
+const PORT = process.env.PORT || 8000
 
 const initMongoDb = async () => {
-        const connectAtlas = "mongodb+srv://root:root@cluster0.i61fljc.mongodb.net/ecommerce?retryWrites=true&w=majority"
-        const connectLocal = "mongodb://localhost:27017/ecommerce"
+        const connectAtlas = process.env.MONGODB_URL_ATLAS
+        const connectLocal = process.env.MONGODB_URL
         try {
             await mongoose.connect(connectAtlas, {
                 useNewUrlParser: true,
@@ -40,19 +41,6 @@ const initMongoDb = async () => {
             console.log(error)
         }
 }
-//MongoDb sesiones
-/* const MongoStore = require("connect-mongo")
-const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
-app.use(session({
-    store: MongoStore.create({
-        mongoUrl: "mongodb+srv://root:root@cluster0.i61fljc.mongodb.net/sesiones?retryWrites=true&w=majority",
-        mongoOptions: advancedOptions,
-        ttl: 600
-    }),
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false
-})) */
 app.set('views', './views'); 
 app.set('view engine', 'ejs'); 
 app.use(express.json())
@@ -93,6 +81,8 @@ if(mode === 'cluster'){
     }) 
 }
 
+
+//Coneccion a socket
 io.on('connection', async (socket) => { 
     console.log('Usuario conectado')
     const productosMongo = await servicio.obtenerProductos()

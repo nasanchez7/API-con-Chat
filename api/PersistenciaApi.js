@@ -1,4 +1,5 @@
 const persistenciaDAOFactory = require("../DAO/PersistenciaDAOFactory");
+require('dotenv').config()
 
 class PersistenciaAPI {
     constructor(collection){

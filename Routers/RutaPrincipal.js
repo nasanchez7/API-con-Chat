@@ -2,7 +2,7 @@ const express = require('express');
 const session = require("express-session")
 const servicio = require('../Servicio/servicio.js')
 const controllers = require('../controllers/controllers.js');
-//Multer y passports
+//Configuracion multer
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -68,6 +68,8 @@ const sendEmail = async (type, body) => {
 const isValidPassword = (user, password) => {
     return bcrypt.compareSync(password, user)
 }
+
+//Configuracion de passports
 passport.use('login', new LocalStrategy(async (username, password, done) => {
         const usuario = await servicio.obtenerUsuario(username)
         if(!usuario){
