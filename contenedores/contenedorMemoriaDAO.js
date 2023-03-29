@@ -1,5 +1,5 @@
-const  DAOpersistencia  = require('../DAO/DAOpersistencia');
-const { guardarObjetoConId } = require('../DTO/persistenciaDTO');
+const  DAOpersistencia  = require('../DAO/DAOpersistencia.js');
+const { guardarObjetoConId } = require('../DTO/persistenciaDTO.js');
 
 class MemoriaDAO extends DAOpersistencia{
     constructor(){

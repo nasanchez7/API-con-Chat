@@ -1,6 +1,6 @@
-const MemoriaDao = require('../Contenedores/contenedorMemoriaDAO')
-const MongoDbDao = require('../Contenedores/contenedorMongoDbDAO')
-const ArchivoDao = require('../Contenedores/contenedorArchivoDAO')
+const MemoriaDao = require('../Contenedores/contenedorMemoriaDAO.js')
+const MongoDbDao = require('../Contenedores/contenedorMongoDbDAO.js')
+const ArchivoDao = require('../Contenedores/contenedorArchivoDAO.js')
 
 class persistenciaDAOFactory{
 

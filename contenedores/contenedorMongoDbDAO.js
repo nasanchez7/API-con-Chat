@@ -1,4 +1,4 @@
-const DAOpersistencia = require('../DAO/DAOpersistencia');
+const DAOpersistencia = require('../DAO/DAOpersistencia.js');
 
 class MongoDbDao extends DAOpersistencia{
     constructor(collection){

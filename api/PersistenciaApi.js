@@ -1,4 +1,4 @@
-const persistenciaDAOFactory = require("../DAO/PersistenciaDAOFactory");
+const persistenciaDAOFactory = require("../DAO/PersistenciaDAOFactory.js");
 require('dotenv').config()
 
 class PersistenciaAPI {
