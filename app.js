@@ -1,7 +1,5 @@
 require('dotenv').config()
 const mongoose = require('mongoose');
-const Contenedor = require("./Contenedores/contenedorSql.js")
-const options = require("./connection/options.js")
 const express = require('express')
 const { Server: HttpServer } = require('http')
 const { Server: IOServer } = require('socket.io')
