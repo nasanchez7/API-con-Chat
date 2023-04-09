@@ -13,6 +13,7 @@ socket.on('connection', (socket) => {
 })
 
 socket.on('mensajes', (data) => {
+    console.log(data)
     const mensajesDesnormalizados = normalizr.denormalize(data.result, mensajesSchema, data.entities)
 
     const tamañoMensajesNormalizados = JSON.stringify(data).length
@@ -28,8 +29,8 @@ socket.on('mensajes', (data) => {
         const mensajeContainer = document.createElement('div')
         mensajeContainer.className = "mensaje"
         mensajeContainer.innerHTML = `
-        <h3 class="email"> ${mensaje._doc.author.email} </h3> <h3  class="fecha"> ${mensaje._doc.author.fecha}: </h3> <h4> ${mensaje._doc.text} </h4>
-        <img class="avatar" src=${mensaje._doc.author.avatar} alt=${mensaje._doc.author.nombre}>
+        <h3 class="email"> ${mensaje._doc.email} </h3> <h3  class="fecha"> ${mensaje._doc.fecha}: </h3> <h4> ${mensaje._doc.text} </h4>
+        <img class="avatar" src=${mensaje._doc.avatar} alt=${mensaje._doc.nombre}>
         `
         listaMensajes.appendChild(mensajeContainer)
     }) 
@@ -103,17 +104,6 @@ const eliminarProductosQuery = `
         }
     }
 `
-const vaciarCarrito = async () => {
-    await axios.post('http://localhost:8000/graphql', {
-        headers: {
-            contentType: 'application/json'
-        },
-        query: eliminarProductosQuery
-    })
-    return false
-} 
-
-
 
 
 const nuevoMensaje = (e) => {

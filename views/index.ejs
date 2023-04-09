@@ -60,7 +60,7 @@
                 <form action="/pay" method="post" onsubmit="() => console.log(`Nueva compra`)">
                     <input type="submit" value="Pagar">
                 </form>
-                <form onsubmit="return vaciarCarrito(this)">
+                <form action="/vaciarCarrito" method="post">
                     <input type="submit" value="Vaciar carrito">
                 </form>
             </div>

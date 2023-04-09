@@ -100,11 +100,12 @@ const postPay = async (req, res) => {
     for (let index = 0; index < productosMongoDb.length; index++) {
         nombreProductos = nombreProductos + productosMongoDb[index].title + ", "
     }
-    await sendEmail('pay', {
+    /* await sendEmail('pay', {
         userInfo: req.user,
         productos: String(nombreProductos)
-    })
+    }) */
     await sendMsj(req.user)
+    await servicio.eliminarProductos()
     res.redirect("/")
 }
 const postVaciarCarrito = async (req, res) => {

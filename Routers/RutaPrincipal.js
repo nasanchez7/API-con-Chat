@@ -98,7 +98,7 @@ passport.use('register', new LocalStrategy({
                 edad: req.body.edad,
                 telefono: req.body.telefono
             }
-            await sendEmail("register", req.body)
+            //await sendEmail("register", req.body)
             await servicio.guardarUsuario(newUser)
             return done(null, newUser.email)
         }
@@ -118,7 +118,7 @@ rutaPrincipal.get('/register', controllers.getRegister)
 rutaPrincipal.post('/pay', controllers.postPay)
 //rutaPrincipal.get('/productos', controllers.getProductos)
 rutaPrincipal.post('/producto', controllers.saveProducto)
-//rutaPrincipal.post('/vaciarCarrito', controllers.postVaciarCarrito)
+rutaPrincipal.post('/vaciarCarrito', controllers.postVaciarCarrito)
 rutaPrincipal.post('/uploadAvatar', upload.single('avatar'), controllers.postSubirAvatar)
 rutaPrincipal.get('/failLogin', controllers.getFailLogin)
 rutaPrincipal.get('/failRegister', controllers.getFailRegister)
